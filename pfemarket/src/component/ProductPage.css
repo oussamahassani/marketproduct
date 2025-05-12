@@ -1,0 +1,40 @@
+.cart-container {
+  position: relative;
+}
+.marketplace-header {
+  background-color:white; /* Couleur de fond */
+  padding: 80px 300px; /* Augmenter les espacements à gauche et à droite */
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 120px; /* La hauteur reste la même */
+  width: 100%; /* Utiliser toute la largeur de l'écran */
+}
+.cart-mini-card {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: white;
+  border: 1px solid #ddd;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 250px;
+  padding: 10px;
+  border-radius: 5px;
+  z-index: 100;
+}
+
+.cart-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 5px;
+  margin-bottom: 5px;
+}
+
+.cart-item-image {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 5px;
+}

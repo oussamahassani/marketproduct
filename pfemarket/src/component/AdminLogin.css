@@ -1,0 +1,28 @@
+/* src/component/AdminLogin.css */
+.admin-login {
+    max-width: 400px;
+    margin: auto;
+    padding: 30px;
+    text-align: center;
+  }
+  
+  .admin-login input {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+  }
+  
+  .admin-login button {
+    padding: 10px 20px;
+    background-color: #007bff;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .admin-login .error {
+    color: red;
+    margin-top: 10px;
+  }
+  
