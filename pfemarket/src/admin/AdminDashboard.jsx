@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState , useEffect} from 'react';
 import {
   FaHome, FaShoppingCart, FaPowerOff,
   FaSync, FaUser, FaListAlt, FaAngleDown, FaAngleUp,
@@ -12,9 +12,18 @@ import Accueil from '../pages/Accueil';
 const AdminDashboard = () => {
   const [showStockMenu, setShowStockMenu] = useState(false);
   const [activeSubcategory, setActiveSubcategory] = useState(null);
+const [userConnected , setUserConnected] = useState(localStorage.getItem("role"))
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    
+  if(userConnected && userConnected != "ADMIN")
+  {
+      navigate("/products");
+  }
+  }, [setUserConnected])
+  
   const toggleStockMenu = () => {
     setShowStockMenu(!showStockMenu);
   };

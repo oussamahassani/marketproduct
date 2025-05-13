@@ -1,7 +1,7 @@
 // src/pages/AdminLogin.jsx
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TextInput, Button, Card, Label } from "flowbite-react";
+import { Button, Card   } from 'react-bootstrap';
 
 export default function LoginAdmin() {
     const [username, setUsername] = useState("");
@@ -26,8 +26,8 @@ export default function LoginAdmin() {
                 <h2 className="text-2xl font-semibold mb-4 text-center">Connexion Admin</h2>
                 <form onSubmit={handleSubmit} className="space-y-4">
                     <div>
-                        <Label htmlFor="username">Nom d'utilisateur</Label>
-                        <TextInput
+                        <Form.Label htmlFor="username">Nom d'utilisateur</Form.Label>
+                        <Form.Control
                             id="username"
                             type="text"
                             value={username}
@@ -37,8 +37,8 @@ export default function LoginAdmin() {
                         />
                     </div>
                     <div>
-                        <Label htmlFor="password">Mot de passe</Label>
-                        <TextInput
+                        <Form.Label htmlFor="password">Mot de passe</Form.Label>
+                        <Form.Control
                             id="password"
                             type="password"
                             value={password}

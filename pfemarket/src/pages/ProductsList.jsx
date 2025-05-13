@@ -10,7 +10,7 @@ export default function ProductsList() {
   const [cart, setCart] = useState([]);
   const [showCart, setShowCart] = useState(false);
   const [loading, setLoading] = useState(true);
-
+const [userConnected , setUserConnected] = useState(localStorage.getItem("token"))
   useEffect(() => {
     ProductServices.getAllProducts()
       .then((response) => {
@@ -63,7 +63,7 @@ export default function ProductsList() {
           </button>
         </div>
 
-        <button className="marketplace-action-button">Connexion</button>
+       {(userConnected == null || userConnected == undefined ) &&  <button className="marketplace-action-button">Connexion</button>}
 
         {/* Panier */}
         <div className="cart-container">

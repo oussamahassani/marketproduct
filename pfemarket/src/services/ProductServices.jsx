@@ -1,6 +1,6 @@
 import axios from 'axios';
-
-const API_URL = 'http://localhost:8080/produits';
+import {API_Base_URL} from './constant'
+const API_URL = `${API_Base_URL}produits`;
 
 class ProductServices {
 

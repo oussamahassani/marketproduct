@@ -29,6 +29,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
                         .requestMatchers("/api/users/**").permitAll()
+                        .requestMatchers("/api/auth/register").permitAll()  // Permet spécifiquement l'accès à /register
+
                         .requestMatchers("/api/greeting/public").permitAll()
                         .requestMatchers("/api/greeting/message").permitAll()
                         .anyRequest().authenticated()
