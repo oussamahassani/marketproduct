@@ -1,114 +1,86 @@
 package com.pfe.users;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import com.pfe.DTO.LoginDTO;
+import com.pfe.users.Utilisateur;
+import com.pfe.users.security.JwtUtil;
+import com.pfe.users.Auth.UserService;
 
-import javax.management.relation.Role;
-import java.util.List;
-
-// @RestController
-// @RequestMapping("/ auth")
+@RestController
+@RequestMapping("/api/auth")
+@Validated
 public class AuthController {
-    // @Autowired
-    // private AuthService authService;
-    // // @Autowired
-    // // private JwtService jwtService;
 
+    private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtService;
 
+    @Autowired
+    public AuthController(UserService userService, AuthenticationManager authenticationManager, JwtUtil jwtService) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtService = jwtService;
+    }
 
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody Utilisateur user) {
+        try {
+            System.out.println("Registering new user with email: " + user.getEmail());
+            Utilisateur createdUser = userService.createUser(user);
+            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        } catch (Exception e) {
+            System.err.println("User registration failed: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User creation failed: " + e.getMessage());
+        }
+    }
 
-    // @GetMapping("/{email}")
-    // public ResponseEntity<Utilisateur> getUtilisateur(@PathVariable String email) {
-    //     Utilisateur utilisateur = authService.getUtilisateurByEmail(email);
-    //     return ResponseEntity.ok(utilisateur);
-    // }
+    @PostMapping("/login")
+public ResponseEntity<LoginDTO> login(@RequestBody AuthRequest authRequest) {
+    try {
+        if (authRequest.getUsername() == null || authRequest.getPassword() == null) {
+            return ResponseEntity.badRequest().body(new LoginDTO("Username and password must not be empty"));
+        }
 
-    // @GetMapping("/all")
-    // public ResponseEntity<List<Utilisateur>> getAllUtilisateurs() {
-    //     return ResponseEntity.ok(authService.findAllUtilisateurs());
-    // }
+        System.out.println("Login attempt for email: " + authRequest.getUsername());
+        
+        Utilisateur user = userService.findUserByEmail(authRequest.getUsername());
+            if(user == null) {
+                System.err.println("User not found: " + authRequest.getUsername());
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginDTO("User not found"));
+                		
+            }
+         
+        
+        System.out.println("Found user in database: " + user.getEmail());
 
-    // @GetMapping("/{id}")
-    // public ResponseEntity<Utilisateur> getUtilisateurById(@PathVariable Long id) {
-    //     return authService.findUtilisateurById(id)
-    //             .map(ResponseEntity::ok)
-    //             .orElseGet(() -> ResponseEntity.notFound().build());
-    // }
+        Authentication authenticate = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(authRequest.getUsername(), authRequest.getPassword())
+        );
 
-    // @PostMapping("/register")
-    // public ResponseEntity<String> register(@RequestBody Utilisateur utilisateur) {
-    //     return ResponseEntity.ok(authService.registerUtilisateur(utilisateur));
-    // }
-    // // @PostMapping("/login")
-    // // public ResponseEntity<String> login(@RequestParam String email, @RequestParam String password) {
-    // //     if (authService.authenticate(email, password)) {
-    // //         // Récupérer l'utilisateur par son email
-    // //         Utilisateur utilisateur = authService.getUtilisateurByEmail(email);
-
-    // //         // Extraire les informations nécessaires de l'utilisateur
-    // //         Long id = utilisateur.getId();
-    // //         String nom = utilisateur.getNom();
-    // //         String prenom = utilisateur.getPrenom();
-    // //         Role role = utilisateur.getRole();
-
-    // //         // Générer un token JWT avec toutes les informations
-    // //         String token = jwtService.generateToken(email, id, nom, prenom, role);
-
-    // //         // Retourner le token
-    // //         return ResponseEntity.ok(token);
-    // //     } else {
-    // //         return ResponseEntity.status(401).body("Authentification échouée");
-    // //     }
-    // // }
-
-
-    // @DeleteMapping("/delete")
-    // public ResponseEntity<Void> deleteUtilisateur(@PathVariable Long id) {
-    //     authService.deleteUtilisateur(id);
-    //     return ResponseEntity.noContent().build();
-    // }
-
-    // @PutMapping("/update-password")
-    // public ResponseEntity<Void> updatePassword(@PathVariable Long id, @RequestParam String newPassword) {
-    //     authService.updatePassword(id, newPassword);
-    //     return ResponseEntity.noContent().build();
-    // }
-
-    // @PutMapping("/update/{id}")
-    // public ResponseEntity<String> updateUtilisateur(@PathVariable Long id, @RequestBody Utilisateur utilisateurDetails) {
-    //     String updatedUtilisateur = authService.updateUtilisateur(id, utilisateurDetails);
-    //     return ResponseEntity.ok(updatedUtilisateur);
-    // }
-
-
-    // /// //////////////
-    // // @GetMapping("/validate-token")
-    // // public ResponseEntity<String> validateToken(@RequestHeader("Authorization") String authHeader) {
-    // //     String token = authHeader.replace("Bearer ", "");
-
-    // //     if (jwtService.validateToken(token)) {
-    // //         String email = jwtService.getEmailFromToken(token);
-    // //         return ResponseEntity.ok("Token valide pour l'utilisateur : " + email);
-    // //     } else {
-    // //         return ResponseEntity.status(401).body("Token invalide");
-    // //     }
-    // // }
-
-    // // @PostMapping("/refresh")
-    // // public ResponseEntity<String> refreshToken(@RequestHeader("Authorization") String authHeader) {
-    // //     // Extraire le token depuis l'en-tête Authorization
-    // //     String token = authHeader.replace("Bearer ", "");
-
-    // //     try {
-    // //         // Rafraîchir le token
-    // //         String newToken = jwtService.refreshToken(token);
-    // //         return ResponseEntity.ok("Nouveau token : " + newToken);
-    // //     } catch (Exception e) {
-    // //         // Si le token est invalide ou expiré
-    // //         return ResponseEntity.status(401).body("Le token est invalide ou expiré.");
-    // //     }
-    // // }
+        if (authenticate.isAuthenticated()) {
+            System.out.println("Authentication successful for user: " + authRequest.getUsername());
+            String token = jwtService.generateToken(user);
+            return ResponseEntity.ok(new LoginDTO(token));
+        } else {
+            System.err.println("Authentication failed for user: " + authRequest.getUsername());
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginDTO("Invalid credentials"));
+        }
+    } catch (BadCredentialsException e) {
+        System.err.println("Bad credentials for user " + authRequest.getUsername() + ": " + e.getMessage());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginDTO("Invalid credentials"));
+    } catch (Exception e) {
+        System.err.println("Authentication error for user " + authRequest.getUsername() + ": " + e.getMessage());
+        e.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new LoginDTO("Authentication failed"));
+    }
+    }
 
 }

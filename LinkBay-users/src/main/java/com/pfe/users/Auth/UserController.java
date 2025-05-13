@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
-@CrossOrigin(origins = "http://localhost:3000") // ou l'adresse de ton frontend React
+@CrossOrigin(origins = "*") // ou l'adresse de ton frontend React
 
 @RestController
 @RequestMapping("/auth")
@@ -61,7 +61,7 @@ public class UserController {
         }
 
         // Generate JWT token
-        String token = jwtUtil.generateToken(utilisateur.getEmail());
+        String token = jwtUtil.generateToken(utilisateur);
 
         // Create response
         Map<String, String> response = new HashMap<>();

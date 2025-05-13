@@ -1,4 +1,4 @@
-package com.pfe.users;
+package com.pfe.users.Configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,11 +13,10 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**") // autorise toutes les routes
-                        .allowedOrigins("http://localhost:5173") // autorise ce frontend
-                        .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .allowCredentials(true);
+                registry.addMapping("/**")
+                    .allowedOriginPatterns("http://localhost:3000") // ou d'autres domaines explicites
+                    .allowedMethods("GET", "POST", "PUT", "DELETE")
+                    .allowCredentials(true);
             }
         };
     }

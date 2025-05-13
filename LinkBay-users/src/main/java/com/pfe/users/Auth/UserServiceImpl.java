@@ -7,14 +7,22 @@ import org.springframework.http.*;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+
+import java.util.List;
+import java.util.Optional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService , UserDetailsService {
 
     private final UtilisateurRepository utilisateurRepository;
 
@@ -78,6 +86,16 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-
+	@Override
+	public Utilisateur findUserByEmail(String email) {
+		// TODO Auto-generated method stub
+		return  utilisateurRepository.findUserByEmail(email);
+	}
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	    return utilisateurRepository.findByEmail(username)
+	        .orElseThrow(() -> new UsernameNotFoundException("User not found with email: " + username));
+	}
+	   
 
 }
