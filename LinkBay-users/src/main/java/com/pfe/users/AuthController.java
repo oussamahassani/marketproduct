@@ -68,7 +68,7 @@ public ResponseEntity<LoginDTO> login(@RequestBody AuthRequest authRequest) {
         if (authenticate.isAuthenticated()) {
             System.out.println("Authentication successful for user: " + authRequest.getUsername());
             String token = jwtService.generateToken(user);
-            return ResponseEntity.ok(new LoginDTO(token));
+            return ResponseEntity.ok(new LoginDTO(token ,user.getNom(),user.getRole().toString() ));
         } else {
             System.err.println("Authentication failed for user: " + authRequest.getUsername());
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new LoginDTO("Invalid credentials"));

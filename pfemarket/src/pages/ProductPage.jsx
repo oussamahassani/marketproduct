@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Search } from "lucide-react";
 import "../component/ProductPage.css";
-
+import {logout} from '../services/loginService'
 export default function ProductPage() {
   const location = useLocation();
   const navigate = useNavigate();
@@ -10,7 +10,7 @@ export default function ProductPage() {
   const [quantity, setQuantity] = useState(1);
   const [cart, setCart] = useState([]); // État du panier
   const [showCart, setShowCart] = useState(false); // Afficher ou masquer la mini-carte
-
+const [userConnected , setUserConnected] = useState(localStorage.getItem("token"))
   // Charger le panier depuis le localStorage au montage du composant
   useEffect(() => {
     const savedCart = JSON.parse(localStorage.getItem("cart")) || [];
@@ -31,7 +31,10 @@ export default function ProductPage() {
     const newItem = { ...product, quantity };
     setCart([...cart, newItem]);
   };
-
+ const deconnection = () => {
+logout()
+navigate("/")
+ }
   return (
     <div>
       {/* HEADER */}
@@ -45,8 +48,9 @@ export default function ProductPage() {
             <Search size={20} />
           </button>
         </div>
-        <button className="marketplace-action-button">Connexion</button>
-        
+      {(userConnected == null || userConnected == undefined ) &&  <button className="marketplace-action-button">Connexion</button>}
+              {(userConnected !== null && userConnected !== undefined ) &&  <button className="marketplace-action-button" onClick={deconnection}>Deconnection</button>}
+
         {/* Panier */}
         <div className="cart-container">
           <button className="marketplace-action-button" onClick={() => setShowCart(!showCart)}>

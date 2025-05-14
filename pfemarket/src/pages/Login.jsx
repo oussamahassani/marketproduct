@@ -1,14 +1,15 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; // Import de useNavigate
-import { TextInput, Button, Card, Label, Select } from 'flowbite-react'; // Utilisation des bons composants
+import { Form , Button, Card  } from 'react-bootstrap';
+
 import '../component/Login.css';
 import Header from '../pages/Header';
-
+import {signup , login} from '../services/loginService'
 const Inscription = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
-  const [role, setRole] = useState('acheteur');
+  const [role, setRole] = useState('ACHETEUR');
   const [isRegistering, setIsRegistering] = useState(false);
   const [nom, setNom] = useState('');
   const [prenom, setPrenom] = useState('');
@@ -18,7 +19,7 @@ const Inscription = () => {
 
   const navigate = useNavigate(); // Utilisation de useNavigate
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError('Les mots de passe ne correspondent pas');
@@ -26,18 +27,33 @@ const Inscription = () => {
     }
 
     if (isRegistering) {
-      console.log('Nom:', nom);
-      console.log('Prénom:', prenom);
-      console.log('Numéro de téléphone:', numTel);
-      console.log('Adresse:', adresse);
+const creteNewAcount =  await signup({email,password,role,nom,prenom,numTel,adresse})
+console.log('creteNewAcount:', creteNewAcount);
+if(creteNewAcount.id){
+   navigate('/login'); 
+}
+    }
+    else {
+const loginResult = await login(email,password)
+console.log('loginResult:', loginResult);
+
+  localStorage.setItem('role' , loginResult.role);
+  localStorage.setItem('token' ,loginResult.token)
+  if(loginResult.role =="ADMIN"){
+
+navigate('/admin/dashboard'); 
+  }
+  else {
+navigate('/products'); 
+  }
+      
     }
 
     console.log('Email:', email);
     console.log('Mot de passe:', password);
     console.log('Rôle:', role);
 
-    // Redirection vers la page des produits ou autre action après soumission
-    // navigate('/products'); // Exemple de redirection
+
   };
 
   return (
@@ -48,13 +64,13 @@ const Inscription = () => {
           <h2 className="text-2xl font-semibold mb-4 text-center">
             {isRegistering ? 'Créez votre compte' : 'Connectez-vous à votre compte'}
           </h2>
-          <form onSubmit={handleSubmit} className="space-y-4">
+          <Form  onSubmit={handleSubmit} className="space-y-4">
             {isRegistering && (
               <>
-                <Label htmlFor="nom">Informations personnelles</Label>
+                <Form.Label htmlFor="nom">Informations personnelles</Form.Label>
                 <div className="form-group">
-                  <Label htmlFor="nom">Nom</Label>
-                  <TextInput
+                  <Form.Label htmlFor="nom">Nom</Form.Label>
+                  <Form.Control
                     type="text"
                     id="nom"
                     value={nom}
@@ -64,8 +80,8 @@ const Inscription = () => {
                 </div>
 
                 <div className="form-group">
-                  <Label htmlFor="prenom">Prénom</Label>
-                  <TextInput
+                  <Form.Label htmlFor="prenom">Prénom</Form.Label>
+                  <Form.Control
                     type="text"
                     id="prenom"
                     value={prenom}
@@ -75,8 +91,8 @@ const Inscription = () => {
                 </div>
 
                 <div className="form-group">
-                  <Label htmlFor="numTel">Numéro de téléphone</Label>
-                  <TextInput
+                  <Form.Label htmlFor="numTel">Numéro de téléphone</Form.Label>
+                  <Form.Control
                     type="tel"
                     id="numTel"
                     value={numTel}
@@ -85,10 +101,10 @@ const Inscription = () => {
                   />
                 </div>
 
-                <Label htmlFor="adresse">Informations d'adresse</Label>
+                <Form.Label htmlFor="adresse">Informations d'adresse</Form.Label>
                 <div className="form-group">
-                  <Label htmlFor="adresse">Adresse</Label>
-                  <TextInput
+                  <Form.Label htmlFor="adresse">Adresse</Form.Label>
+                  <Form.Control
                     type="text"
                     id="adresse"
                     value={adresse}
@@ -99,11 +115,11 @@ const Inscription = () => {
               </>
             )}
 
-            <Label htmlFor="email">Informations de connexion</Label>
+            <Form.Label htmlFor="email">Informations de connexion</Form.Label>
 
             <div className="form-group">
-              <Label htmlFor="email">Adresse e-mail</Label>
-              <TextInput
+              <Form.Label htmlFor="email">Adresse e-mail</Form.Label>
+              <Form.Control
                 type="email"
                 id="email"
                 value={email}
@@ -113,8 +129,8 @@ const Inscription = () => {
             </div>
 
             <div className="form-group">
-              <Label htmlFor="password">Mot de passe</Label>
-              <TextInput
+              <Form.Label htmlFor="password">Mot de passe</Form.Label>
+              <Form.Control
                 type="password"
                 id="password"
                 value={password}
@@ -124,8 +140,8 @@ const Inscription = () => {
             </div>
 
             <div className="form-group">
-              <Label htmlFor="confirmPassword">Confirmer le mot de passe</Label>
-              <TextInput
+              <Form.Label htmlFor="confirmPassword">Confirmer le mot de passe</Form.Label>
+              <Form.Control
                 type="password"
                 id="confirmPassword"
                 value={confirmPassword}
@@ -136,15 +152,15 @@ const Inscription = () => {
 
             {!isRegistering && (
               <div className="form-group">
-                <Label htmlFor="role">Rôle</Label>
-                <Select
+                <Form.Label htmlFor="role">Rôle</Form.Label>
+                <Form.Select
                   id="role"
                   value={role}
                   onChange={(e) => setRole(e.target.value)}
                 >
-                  <option value="acheteur">Acheteur</option>
-                  <option value="vendeur">Vendeur</option>
-                </Select>
+                  <option value="ACHETEUR">Acheteur</option>
+                  <option value="VEDEUR">Vendeur</option>
+                </Form.Select>
               </div>
             )}
 
@@ -153,7 +169,7 @@ const Inscription = () => {
             <Button type="submit" className="w-full">
               {isRegistering ? "S'inscrire" : 'Connexion'}
             </Button>
-          </form>
+          </Form >
 
           <Button
             onClick={() => setIsRegistering(!isRegistering)}
