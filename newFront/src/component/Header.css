@@ -1,0 +1,190 @@
+.mar-container {
+  width: 100vw;
+  
+}
+.marketplace-header {
+    width: 100%;
+    height: 120px; /* ✅ hauteur augmentée */
+    background-color: #f4f4f4;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30px 60px; /* ✅ plus d'espace interne */
+    box-sizing: border-box;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+  
+    
+  }
+  
+  .marketplace-logo {
+    font-size: 32px; /* ✅ logo plus grand */
+    font-weight: bold;
+    color: #333;
+  }
+  
+  .marketplace-search-container {
+    flex: 1;
+    display: flex;
+    margin: 0 40px;
+  }
+  
+  .marketplace-search-input {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px 0 0 4px;
+  }
+  
+  .marketplace-search-button {
+    padding: 12px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+  }
+  
+  .marketplace-actions {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .marketplace-action-button {
+    padding: 10px 16px;
+    font-size: 14px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  
+  .marketplace-anglais-select {
+    padding: 10px;
+    font-size: 14px;
+    border-radius: 4px;
+  }
+ /* Barre de catégories */
+ .category-bar {
+    background-color: #f8f8f8;
+    padding: 10px 20px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .category-list {
+    display: flex;
+    justify-content: space-around;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .category-list li {
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+    transition: color 0.3s ease;
+  }
+  
+  .category-list li:hover {
+    color: #007bff;
+  }
+  .marketplace-profile-icon {
+    color: #fafafa;
+    transition: transform 0.2s ease;
+  }
+  
+  .marketplace-profile-icon:hover {
+    transform: scale(3.3);
+  }
+  .marketplace-action-button {
+    background: none;
+    border: none;
+    color:white;
+    font-size: 16px;
+    cursor: pointer;
+  } 
+  .marketplace-nav {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding: 16px;
+    background:#0066cc;
+    font-size: 18px;
+    color: #333;
+    font-weight: bold;
+    
+    
+  }
+  .dropdown-mega {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-mega .dropdown-title {
+    padding: 10px 16px;
+    cursor: pointer;
+  }
+  
+  .mega-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 100%;
+    transform: translateX(-50%);
+    background-color: white;
+    padding: 20px;
+    width: 1000px; /* ← Ajuste selon besoin */
+    max-width: 90vw; /* Pour ne pas dépasser l’écran */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    gap: 30px;
+  }
+  
+  
+  /* Affiche la carte quand on survole Explore */
+  .dropdown-mega:hover .mega-menu {
+    display: flex;
+  }
+  .mega-menu {
+    display: none;
+    flex-direction: row;
+    justify-content: space-between;
+      min-height: 250px;
+  
+  }
+  
+  
+  .mega-column h4 {
+    margin-bottom: 10px;
+    font-size: 16px;
+    color: #333;
+  }
+  
+  .mega-column ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .mega-column ul li {
+    padding: 5px 0;
+    cursor: default;
+  }
+  
+  .mega-column ul li:hover {
+    color: #007bff;
+  }
+  
+  /* Affiche la carte quand on survole Explore */
+  .dropdown-mega:hover .mega-menu {
+    display: flex;
+  }
+  .dropdown-mega {
+    position: relative;
+  }
+  
