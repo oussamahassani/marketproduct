@@ -43,7 +43,7 @@ console.log('loginResult:', loginResult);
 navigate('/admin/dashboard'); 
   }
   else {
-navigate('/products'); 
+navigate('/'); 
   }
       
     }
